@@ -32,8 +32,5 @@
     "**/*.ts",
     "**/*.tsx"
   ],
-  "exclude": [
-    "node_modules",
-    "babel.config.js"
-  ]
+  "exclude": ["node_modules"]
 }
