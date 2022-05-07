@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "constructor-super": "error",
+    "no-async-promise-executor": "error",
+    "no-debugger": "error",
+    "no-console": "error",
+    "quotes": ["error", "single"],
+    "brace-style": "error",
+    "semi": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/react-in-jsx-scope": 0
+  }
+}

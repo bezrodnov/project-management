@@ -1,0 +1,16 @@
+{
+  "printWidth": 120,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "semi": true,
+  "importOrder": [
+    "^react(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "test-utils",
+    "^~",
+    "^[./]+.*(?<!\\.[s]?css)$",
+    "^[./]+.*(\\.[s]?css)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
