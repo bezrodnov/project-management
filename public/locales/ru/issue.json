@@ -1,4 +1,5 @@
 {
-  "description": "Issue #{{id}} in project #{{pid}}",
-  "title": "Project Management | Issue#{{id}}"
+  "description": "Задача #{{id}} в проекте #{{pid}}",
+  "title": "Управление проектами | Задача #{{id}}",
+  "home": "Домой"
 }
