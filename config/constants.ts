@@ -4,8 +4,11 @@ const LOCAL_STORAGE = {
   REFRESH_TOKEN: 'project-management-app-refresh-token',
 };
 
-const PAGES = {
+const PATHS = {
+  SIGN_IN: '/signin',
+  SIGN_OFF: '/signoff',
+  SIGN_UP: '/signup',
+  HOME: '/',
+};
 
-}
-
-export { LOCAL_STORAGE, PAGES };
+export { LOCAL_STORAGE, PATHS };

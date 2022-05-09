@@ -62,4 +62,4 @@ const LanguageSwitch = () => {
   );
 };
 
-export default LanguageSwitch;
+export { LanguageSwitch };

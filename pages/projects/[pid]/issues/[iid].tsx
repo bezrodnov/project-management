@@ -4,7 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import Layout from '~/components/layout';
+import { Layout } from '~/components/Layout';
 
 const Issue = () => {
   const { t } = useTranslation('issue');

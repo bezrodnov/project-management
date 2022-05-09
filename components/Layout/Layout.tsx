@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import clsx from 'clsx';
 
-import Header from './header';
+import { Header } from '~/components/Header';
 
 import styles from './layout.module.scss';
 
@@ -32,4 +32,4 @@ const Layout = ({ children, disableScroll, title }: LayoutProps) => (
   </div>
 );
 
-export default Layout;
+export { Layout };

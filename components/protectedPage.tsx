@@ -8,4 +8,4 @@ const ProtectedPage = ({ children }: { children: ReactNode }) => {
   return children;
 };
 
-export default ProtectedPage;
+export { ProtectedPage };
