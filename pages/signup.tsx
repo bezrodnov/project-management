@@ -1,37 +1,43 @@
 import { useState } from 'react';
 
+import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-import { Button, Container, Paper, Stack, Typography } from '@mui/material';
-
 import { useSnackbar } from 'notistack';
 import * as Yup from 'yup';
 
 import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
-import { UserNotAuthenticatedError } from '~/errors';
-import { signIn } from '~/features/auth';
+import { signIn, signUp } from '~/features/auth';
 import { useAppDispatch } from '~/store';
 
 type FormValues = {
+  name: string;
   login: string;
   password: string;
+  passwordRepeat: string;
 };
 
-const initialValues: FormValues = { login: '', password: '' };
+const initialValues: FormValues = { name: '', login: '', password: '', passwordRepeat: '' };
 
 const valdiationSchemaBulder: ValidationSchemaBulder<FormValues> = (t) =>
   Yup.object().shape({
+    name: Yup.string().required(t('common:forms.fieldIsRequired')),
     login: Yup.string().required(t('common:forms.fieldIsRequired')),
     password: Yup.string().required(t('common:forms.fieldIsRequired')),
+    passwordRepeat: Yup.string().test({
+      name: 'equalTo',
+      exclusive: false,
+      message: t('signup:passwordsMissmatch'),
+      test: (passwordRepeat, context) => passwordRepeat === context.resolve(Yup.ref('password')),
+    }),
   });
 
-const SignIn = () => {
-  const { t } = useTranslation(['signin', 'common']);
+const SignUp = () => {
+  const { t } = useTranslation(['signup', 'common']);
 
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -40,29 +46,26 @@ const SignIn = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const onSubmit = (credentials: FormValues) => {
+  const onSubmit = async ({ name, login, password }: FormValues) => {
     if (loading) {
       return;
     }
 
     setLoading(true);
-    dispatch(signIn(credentials))
-      .unwrap()
-      .then(
-        () => {
-          router.push(PATHS.HOME);
-        },
-        (e: UserNotAuthenticatedError | unknown) => {
-          if (e instanceof UserNotAuthenticatedError) {
-            // TODO: redirect
-            return;
-          }
-          enqueueSnackbar('Ooops');
-        }
-      )
-      .finally(() => {
-        setLoading(false);
-      });
+
+    try {
+      await dispatch(signUp({ name, login, password })).unwrap();
+      try {
+        await dispatch(signIn({ login, password })).unwrap();
+        router.push(PATHS.HOME);
+      } catch (e) {
+        enqueueSnackbar('Ooops, login failed');
+      }
+    } catch (e) {
+      enqueueSnackbar('Ooops, registration failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validationSchema = useValidationSchema(valdiationSchemaBulder);
@@ -74,23 +77,29 @@ const SignIn = () => {
     >
       <Paper>
         <Typography textAlign="center" variant="h3" sx={{ mt: 2 }}>
-          {t('signin:title')}
+          {t('signup:title')}
         </Typography>
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
           <Form>
             <Stack p={4} spacing={2}>
-              <TextField<FormValues, 'login'> name="login" label={t('signin:login')} />
-              <TextField<FormValues, 'password'> name="password" label={t('signin:password')} type="password" />
+              <TextField<FormValues, 'name'> name="name" label={t('signup:name')} />
+              <TextField<FormValues, 'login'> name="login" label={t('signup:login')} />
+              <TextField<FormValues, 'password'> name="password" label={t('signup:password')} type="password" />
+              <TextField<FormValues, 'passwordRepeat'>
+                name="passwordRepeat"
+                label={t('signup:passwordRepeat')}
+                type="password"
+              />
               <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }} disabled={loading}>
-                <Typography variant="body2">{t('signin:signIn')}</Typography>
+                <Typography variant="body2">{t('signup:signUp')}</Typography>
               </Button>
               <Stack flexDirection="row" justifyContent="center" alignItems="center">
                 <Typography variant="body2" sx={{ mr: 1 }}>
-                  {t('signin:signUpPrompt')}
+                  {t('signup:signInPrompt')}
                 </Typography>
-                <Link href={PATHS.SIGN_UP}>
+                <Link href={PATHS.SIGN_IN}>
                   <a>
-                    <Typography variant="body2">{t('signin:signUp')}</Typography>
+                    <Typography variant="body2">{t('signup:signIn')}</Typography>
                   </a>
                 </Link>
               </Stack>
@@ -104,8 +113,8 @@ const SignIn = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({ locale = 'en' }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['signin', 'common'])),
+    ...(await serverSideTranslations(locale, ['signup', 'common'])),
   },
 });
 
-export default SignIn;
+export default SignUp;

@@ -1,35 +1,43 @@
-import { PayloadAction, SliceCaseReducers, createSelector, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { RootState, useAppSelector } from '~/store';
 
-export type AuthState =
-  | {
-      isAuthenticated: false;
-      userId: undefined;
-    }
-  | {
-      isAuthenticated: true;
-      userId: string;
-    };
+const signIn = createAsyncThunk('auth/signIn', (credentials: { login: string; password: string }) =>
+  axios.post<void>('/signin', credentials).then(() => {})
+);
 
-const initialState: AuthState = {
-  isAuthenticated: false,
-  userId: undefined,
+const signUp = createAsyncThunk('auth/signUp', (user: { name: string; login: string; password: string }) =>
+  axios.post<void>('/signup', user).then(() => {})
+);
+
+const signOff = createAsyncThunk('auth/signOff', () => axios.post<void>('/signoff').then(() => {}));
+
+export type AuthState = {
+  isAuthenticated: boolean;
 };
 
+const initialState: AuthState = { isAuthenticated: false };
+
 const reducers = {
-  login: (state: AuthState, action: PayloadAction<{ userId: string }>): AuthState => ({
-    ...state,
-    isAuthenticated: true,
-    userId: action.payload.userId,
-  }),
-  logoff: (state: AuthState): AuthState => ({ ...state, userId: undefined, isAuthenticated: false }),
+  initAuth: (state: AuthState, action: PayloadAction<{ isAuthenticated: boolean }>) => {
+    state.isAuthenticated = action.payload.isAuthenticated;
+  },
 };
 
 export const authSlice = createSlice<AuthState, typeof reducers>({
   name: 'auth',
   initialState,
   reducers,
+  extraReducers: (builder) => {
+    builder.addCase(signIn.fulfilled, (state) => {
+      state.isAuthenticated = true;
+    });
+
+    builder.addCase(signOff.fulfilled, (state) => {
+      state.isAuthenticated = false;
+    });
+  },
 });
 
 const authSelector = createSelector(
@@ -37,7 +45,8 @@ const authSelector = createSelector(
   (auth) => auth
 );
 
-export const { login, logoff } = authSlice.actions;
+const { initAuth } = authSlice.actions;
+const { reducer } = authSlice;
+const useAuthSelector = () => useAppSelector(authSelector);
 
-export const { reducer: authReducer } = authSlice;
-export const useAuthSelector = () => useAppSelector(authSelector);
+export { signIn, signUp, signOff, initAuth, useAuthSelector, reducer as authReducer };

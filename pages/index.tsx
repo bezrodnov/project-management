@@ -1,15 +1,14 @@
-import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 
 import { Layout } from '~/components/Layout';
+import { getDefaultServerSideProps } from '~/utils/getDefaultServerSideProps';
 
-const Home = () => {
+const Home = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const { t } = useTranslation('home');
   return (
     <>
-      <Layout title={t('title')}>
+      <Layout title={t('title')} isAuthenticated={isAuthenticated}>
         <h1 className="title">
           Learn <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -143,10 +142,6 @@ const Home = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['home', 'header'])),
-  },
-});
+export const getServerSideProps = getDefaultServerSideProps({ i18nextNamespaces: ['home', 'header'] });
 
 export default Home;
