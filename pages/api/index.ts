@@ -37,7 +37,6 @@ const proxy =
         res.send(data.token ? {} : data);
       })
       .catch((e) => {
-        console.error(e);
         res.status(500);
         res.end();
       });

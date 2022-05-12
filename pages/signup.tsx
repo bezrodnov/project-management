@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import { Button, Container, Paper, Stack, Typography } from '@mui/material';
-import { GetServerSideProps } from 'next';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import { Button, Container, Paper, Stack, Typography } from '@mui/material';
+
 import { useSnackbar } from 'notistack';
 import * as Yup from 'yup';
 
@@ -13,6 +13,7 @@ import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } 
 import { PATHS } from '~/config';
 import { signIn, signUp } from '~/features/auth';
 import { useAppDispatch } from '~/store';
+import { getUnauthorizedPageServerSideProps } from '~/utils/getUnauthorizedPageServerSideProps';
 
 type FormValues = {
   name: string;
@@ -111,10 +112,6 @@ const SignUp = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale = 'en' }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['signup', 'common'])),
-  },
-});
+export const getServerSideProps = getUnauthorizedPageServerSideProps({ i18nextNamespaces: ['signup', 'common'] });
 
 export default SignUp;

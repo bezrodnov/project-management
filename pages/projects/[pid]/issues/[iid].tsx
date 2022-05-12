@@ -1,5 +1,4 @@
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -25,12 +24,6 @@ const Issue = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   );
 };
 
-export const getServerSideProps = getProtectedPageServerSideProps({
-  getAdditionalProps: async ({ locale = 'en' }) => ({
-    props: {
-      ...(await serverSideTranslations(locale, ['issue', 'header'])),
-    },
-  }),
-});
+export const getServerSideProps = getProtectedPageServerSideProps({ i18nextNamespaces: ['issue', 'header'] });
 
 export default Issue;
