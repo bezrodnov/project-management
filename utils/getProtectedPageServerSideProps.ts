@@ -17,7 +17,7 @@ export const getProtectedPageServerSideProps = <
   getDefaultServerSideProps({
     i18nextNamespaces,
     getAdditionalProps: async (context: GetServerSidePropsContext<Q, D>) => {
-      const { token } = context.req.cookies;
+      const token = context.req.cookies['auth-token'];
       if (!token) {
         return { redirect: { destination: PATHS.SIGN_IN, permanent: false } };
       }

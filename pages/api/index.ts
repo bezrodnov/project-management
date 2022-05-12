@@ -15,7 +15,8 @@ const proxy =
 
     const url = req.url?.substring('/api/'.length);
 
-    const headers = req.cookies.token ? { Authorization: `Bearer ${req.cookies.token}` } : undefined;
+    const token = req.cookies['auth-token'];
+    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
     return axios(`${baseURL}/${url}`, {
       method: req.method,
@@ -31,7 +32,7 @@ const proxy =
 
         const data = response.data;
         if (data.token) {
-          res.setHeader('Set-Cookie', `token=${data.token}; Max-Age=${60 * 60 * 24 * 2}; path=/; HttpOnly`);
+          res.setHeader('Set-Cookie', `auth-token=${data.token}; Max-Age=${60 * 60 * 24 * 2}; path=/; HttpOnly`);
         }
         res.send(data.token ? {} : data);
       })

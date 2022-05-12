@@ -16,7 +16,7 @@ export const getDefaultServerSideProps =
     i18nextNamespaces?: string[];
   }): GetServerSideProps<P & { isAuthenticated: boolean }, Q, D> =>
   async (context) => {
-    const { token } = context.req.cookies;
+    const token = context.req.cookies['auth-token'];
 
     const props = { isAuthenticated: !!token } as P & { isAuthenticated: boolean };
     if (getAdditionalProps) {
