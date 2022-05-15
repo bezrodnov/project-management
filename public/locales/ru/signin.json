@@ -4,5 +4,9 @@
   "signUp": "Зарегистрироваться",
   "signIn": "Продолжить",
   "login": "Имя пользователя",
-  "password": "Пароль"
+  "password": "Пароль",
+  "signInFailed": "Ошибка авторизации",
+  "signInErrors": {
+    "default": "$t(common:errors.common)"
+  }
 }

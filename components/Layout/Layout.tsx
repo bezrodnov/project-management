@@ -2,9 +2,9 @@ import { ReactNode, useEffect } from 'react';
 
 import clsx from 'clsx';
 
-import { Header } from '~/components/Header';
-import { initAuth } from '~/features/auth';
+import { Header } from '~/components';
 import { useAppDispatch } from '~/store';
+import { initAuth } from '~/store/authSlice';
 
 import styles from './layout.module.scss';
 

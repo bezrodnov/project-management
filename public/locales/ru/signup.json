@@ -1,0 +1,17 @@
+{
+  "title": "Регистрация",
+  "signInPrompt": "Уже зарегистрированы?",
+  "signIn": "Войти",
+  "signUp": "Продолжить",
+  "name": "Имя пользователя",
+  "login": "Логин",
+  "password": "Пароль",
+  "passwordRepeat": "Повтор пароля",
+  "passwordsMissmatch": "Пароли не совпадают",
+  "signInFailed": "Ошибка авторизации",
+  "signUpFailed": "Ошибка регистрации",
+  "signUpErrors": {
+    "409": "Пользователь с таким логином уже занят",
+    "default": "$t(common:errors.common)"
+  }
+}

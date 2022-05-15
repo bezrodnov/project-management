@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next';
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -37,6 +37,10 @@ const proxy =
         res.send(data.token ? {} : data);
       })
       .catch((e) => {
+        if (e instanceof AxiosError) {
+          res.status(e.response?.status ?? 500).send(e.response?.data);
+          return;
+        }
         res.status(500);
         res.end();
       });

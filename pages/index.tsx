@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 
-import { Layout } from '~/components/Layout';
+import { Layout } from '~/components';
 import { getDefaultServerSideProps } from '~/utils/getDefaultServerSideProps';
 
 const Home = ({ isAuthenticated }: { isAuthenticated: boolean }) => {

@@ -7,8 +7,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AppBar, Box, Button, Toolbar } from '@mui/material';
 
 import { PATHS } from '~/config';
-import { signOff, useAuthSelector } from '~/features/auth';
 import { useAppDispatch } from '~/store';
+import { signOff, useAuthSelector } from '~/store/authSlice';
 
 import { LanguageSwitch } from './LanguageSwitch';
 

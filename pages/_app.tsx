@@ -16,7 +16,7 @@ const App = ({ Component, pageProps }: AppProps) => (
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <Provider store={store}>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider maxSnack={3} autoHideDuration={10000}>
         <Component {...pageProps} />
       </SnackbarProvider>
     </Provider>

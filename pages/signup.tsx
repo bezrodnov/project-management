@@ -6,13 +6,14 @@ import { useRouter } from 'next/router';
 
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 
-import { useSnackbar } from 'notistack';
+import { AxiosError } from 'axios';
 import * as Yup from 'yup';
 
 import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
-import { signIn, signUp } from '~/features/auth';
+import { useSnackbar } from '~/hooks';
 import { useAppDispatch } from '~/store';
+import { signIn, signUp } from '~/store/authSlice';
 import { getUnauthorizedPageServerSideProps } from '~/utils/getUnauthorizedPageServerSideProps';
 
 type FormValues = {
@@ -60,10 +61,15 @@ const SignUp = () => {
         await dispatch(signIn({ login, password })).unwrap();
         router.push(PATHS.HOME);
       } catch (e) {
-        enqueueSnackbar('Ooops, login failed');
+        enqueueSnackbar({ title: t('signInFailed'), type: 'error' });
       }
     } catch (e) {
-      enqueueSnackbar('Ooops, registration failed');
+      const status = typeof e === 'number' ? e : 500;
+      enqueueSnackbar({
+        title: t('signUpFailed'),
+        description: t(`signUpErrors.${status}`, t('signUpErrors.default')),
+        type: 'error',
+      });
     } finally {
       setLoading(false);
     }

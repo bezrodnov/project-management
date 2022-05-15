@@ -6,14 +6,13 @@ import { useRouter } from 'next/router';
 
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 
-import { useSnackbar } from 'notistack';
 import * as Yup from 'yup';
 
 import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
-import { UserNotAuthenticatedError } from '~/errors';
-import { signIn } from '~/features/auth';
+import { useSnackbar } from '~/hooks';
 import { useAppDispatch } from '~/store';
+import { signIn } from '~/store/authSlice';
 import { getUnauthorizedPageServerSideProps } from '~/utils/getUnauthorizedPageServerSideProps';
 
 type FormValues = {
@@ -51,12 +50,13 @@ const SignIn = () => {
         () => {
           router.push(PATHS.HOME);
         },
-        (e: UserNotAuthenticatedError | unknown) => {
-          if (e instanceof UserNotAuthenticatedError) {
-            // TODO: redirect
-            return;
-          }
-          enqueueSnackbar('Ooops');
+        (e) => {
+          const status = typeof e === 'number' ? e : 500;
+          enqueueSnackbar({
+            title: t('signInFailed'),
+            description: t(`signInErrors.${status}`, t('signInErrors.default')),
+            type: 'error',
+          });
         }
       )
       .finally(() => {

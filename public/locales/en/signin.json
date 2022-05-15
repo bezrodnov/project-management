@@ -4,5 +4,9 @@
   "signUp": "Sign up",
   "signIn": "Continue",
   "login": "Login",
-  "password": "Password"
+  "password": "Password",
+  "signInFailed": "Sign in failed",
+  "signInErrors": {
+    "default": "$t(common:errors.common)"
+  }
 }
