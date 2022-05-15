@@ -10,7 +10,7 @@ import { PATHS } from '~/config';
 import { useAppDispatch } from '~/store';
 import { signOff, useAuthSelector } from '~/store/authSlice';
 
-import { LanguageSwitch } from './LanguageSwitch2';
+import { LanguageSwitch } from './LanguageSwitch';
 
 type HeaderProps = {
   title: string;
