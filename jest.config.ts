@@ -1,9 +1,10 @@
 import nextJest from 'next/jest';
+
 import type { Config } from '@jest/types';
 
 const createJestConfig = nextJest({
-  dir: '.',
-})
+  dir: 'src',
+});
 
 /*
  * For a detailed explanation regarding each configuration property and type check, visit:
@@ -30,7 +31,7 @@ const config: Config.InitialOptions = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '~/(.*)$': '<rootDir>/$1',
-    'test-utils': '<rootDir>/utils/test-utils'
+    'test-utils': '<rootDir>/utils/test-utils',
   },
 };
 
