@@ -6,7 +6,7 @@ import { Header } from '~/components';
 import { useAppDispatch } from '~/store';
 import { initAuth } from '~/store/authSlice';
 
-import styles from './layout.module.scss';
+import styles from './Layout.module.scss';
 
 export type LayoutProps = {
   children: ReactNode;
