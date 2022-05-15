@@ -1,0 +1,17 @@
+{
+  "title": "Sign up",
+  "signInPrompt": "Already have an account?",
+  "signIn": "Sign in",
+  "signUp": "Continue",
+  "name": "Name",
+  "login": "Login",
+  "password": "Password",
+  "passwordRepeat": "Password Repeat",
+  "passwordsMissmatch": "Passwords do not match",
+  "signInFailed": "Sign in failed",
+  "signUpFailed": "Sign up failed",
+  "signUpErrors": {
+    "409": "User with this login already exists",
+    "default": "$t(common:errors.common)"
+  }
+}

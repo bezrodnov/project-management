@@ -1,3 +1,5 @@
 {
-  "changeLocale": "Сменить язык"
+  "changeLocale": "Сменить язык",
+  "signIn": "Войти",
+  "signOff": "Выйти"
 }

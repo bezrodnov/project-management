@@ -5,6 +5,8 @@
   "semi": true,
   "importOrder": [
     "^react(.*)$",
+    "^next(.*)$",
+    "^@mui(.*)$",
     "<THIRD_PARTY_MODULES>",
     "test-utils",
     "^~",

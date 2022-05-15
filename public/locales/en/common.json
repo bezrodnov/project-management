@@ -1,1 +1,8 @@
-{}
+{
+  "forms": {
+    "fieldIsRequired": "Field is required"
+  },
+  "errors": {
+    "common": "Oops, something went wrong :( Please try again later"
+  }
+}

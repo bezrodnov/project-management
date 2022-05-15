@@ -1,0 +1,12 @@
+{
+  "title": "Sign in",
+  "signUpPrompt": "Don't have an account?",
+  "signUp": "Sign up",
+  "signIn": "Continue",
+  "login": "Login",
+  "password": "Password",
+  "signInFailed": "Sign in failed",
+  "signInErrors": {
+    "default": "$t(common:errors.common)"
+  }
+}

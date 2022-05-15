@@ -1,0 +1,12 @@
+{
+  "title": "Вход",
+  "signUpPrompt": "Еще не завели аккаунт?",
+  "signUp": "Зарегистрироваться",
+  "signIn": "Продолжить",
+  "login": "Имя пользователя",
+  "password": "Пароль",
+  "signInFailed": "Ошибка авторизации",
+  "signInErrors": {
+    "default": "$t(common:errors.common)"
+  }
+}
