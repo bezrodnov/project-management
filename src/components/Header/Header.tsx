@@ -6,27 +6,20 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AppBar, Box, Button, Toolbar } from '@mui/material';
 
+import { signOff } from '~/api/auth';
+import { LanguageSwitch } from '~/components/LanguageSwitch';
 import { PATHS } from '~/config';
-import { useAppDispatch } from '~/store';
-import { signOff, useAuthSelector } from '~/store/authSlice';
 
-import { LanguageSwitch } from './LanguageSwitch';
+import { HeaderProps } from './Header.types';
 
-type HeaderProps = {
-  title: string;
-};
-
-const Header = ({ title }: HeaderProps) => {
+const Header = ({ title, isAuthenticated }: HeaderProps) => {
   const { t } = useTranslation('header');
-  const { isAuthenticated } = useAuthSelector();
 
-  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const onSignOff = () => {
-    dispatch(signOff()).then(() => {
-      router.push(PATHS.HOME);
-    });
+  const onSignOff = async () => {
+    await signOff();
+    router.push(PATHS.HOME);
   };
 
   return (

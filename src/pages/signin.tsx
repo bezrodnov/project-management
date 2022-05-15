@@ -8,11 +8,10 @@ import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 
 import * as Yup from 'yup';
 
+import { signIn } from '~/api/auth';
 import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
 import { useSnackbar } from '~/hooks';
-import { useAppDispatch } from '~/store';
-import { signIn } from '~/store/authSlice';
 import { getUnauthorizedPageServerSideProps } from '~/utils/getUnauthorizedPageServerSideProps';
 
 type FormValues = {
@@ -32,36 +31,30 @@ const SignIn = () => {
   const { t } = useTranslation(['signin', 'common']);
 
   const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
 
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const onSubmit = (credentials: FormValues) => {
+  const onSubmit = async (credentials: FormValues) => {
     if (loading) {
       return;
     }
 
     setLoading(true);
-    dispatch(signIn(credentials))
-      .unwrap()
-      .then(
-        () => {
-          router.push(PATHS.HOME);
-        },
-        (e) => {
-          const status = typeof e === 'number' ? e : 500;
-          enqueueSnackbar({
-            title: t('signInFailed'),
-            description: t(`signInErrors.${status}`, t('signInErrors.default')),
-            type: 'error',
-          });
-        }
-      )
-      .finally(() => {
-        setLoading(false);
+    try {
+      await signIn(credentials);
+      router.push(PATHS.HOME);
+    } catch (e) {
+      const status = typeof e === 'number' ? e : 500;
+      enqueueSnackbar({
+        title: t('signInFailed'),
+        description: t(`signInErrors.${status}`, t('signInErrors.default')),
+        type: 'error',
       });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validationSchema = useValidationSchema(valdiationSchemaBulder);
