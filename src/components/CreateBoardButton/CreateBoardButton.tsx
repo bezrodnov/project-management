@@ -62,7 +62,12 @@ const CreateBoardButton = () => {
           };
 
           return (
-            <Dialog open={isDialogOpen} onClose={onClose} maxWidth="md">
+            <Dialog
+              open={isDialogOpen}
+              onClose={onClose}
+              sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
+              maxWidth="xs"
+            >
               <DialogTitle>{t('boards:createBoard')}</DialogTitle>
               <Form>
                 <DialogContent sx={{ pt: 2 }}>
@@ -70,6 +75,7 @@ const CreateBoardButton = () => {
                     name="title"
                     label={t('boards:board.title')}
                     disabled={isProcessing}
+                    fullWidth
                   />
                 </DialogContent>
                 <DialogActions>

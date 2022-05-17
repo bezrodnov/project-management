@@ -35,7 +35,7 @@ const proxy =
   (req, res) => {
     const { method, url, cookies, body: data } = req;
     if (!url || !method || !methods.includes(method)) {
-      res.status(404);
+      res.status(404).end();
       return;
     }
 

@@ -4,7 +4,6 @@ import Head from 'next/head';
 
 import { SnackbarProvider } from 'notistack';
 
-import { store } from '~/api';
 import '~/init/axios';
 import '~/styles/global.scss';
 

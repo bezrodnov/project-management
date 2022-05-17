@@ -1,33 +1,15 @@
-import { MouseEvent } from 'react';
-
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, List, ListItem, ListItemText, Tooltip } from '@mui/material';
+import { List, ListItem, ListItemText } from '@mui/material';
 
 import { Layout } from '~/components';
-import { CreateBoardButton } from '~/components/CreateBoardButton';
+import { CreateBoardButton } from '~/components';
+import { DeleteBoardIconButton } from '~/components';
 import { PATHS } from '~/config';
 import { doRequest } from '~/pages/api';
 import { Board } from '~/types';
 import { getProtectedPageServerSideProps } from '~/utils/getProtectedPageServerSideProps';
-
-const DeleteBoardIcon = ({ id, title }: { id: string; title: string }) => {
-  const { t } = useTranslation('boards');
-
-  const onClick = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  return (
-    <Tooltip title={t('deleteBoard')}>
-      <IconButton onClick={onClick}>
-        <DeleteIcon />
-      </IconButton>
-    </Tooltip>
-  );
-};
 
 const Boards = ({ isAuthenticated, boards }: { isAuthenticated: boolean; boards: Board[] }) => {
   const { t } = useTranslation(['boards', 'common']);
@@ -59,7 +41,7 @@ const Boards = ({ isAuthenticated, boards }: { isAuthenticated: boolean; boards:
               })}
             >
               <ListItemText sx={{ flexGrow: 1, pr: 2 }}>{title}</ListItemText>
-              <DeleteBoardIcon id={id} title={title} />
+              <DeleteBoardIconButton id={id} title={title} />
             </ListItem>
           </Link>
         ))}

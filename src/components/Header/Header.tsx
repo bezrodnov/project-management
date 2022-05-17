@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 import { signOff } from '~/api/auth';
-import { LanguageSwitch } from '~/components/LanguageSwitch';
+import { LanguageSwitch } from '~/components';
 import { PATHS } from '~/config';
 
 import { HeaderProps } from './Header.types';

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { OptionsObject, useSnackbar as useSnackbarOriginal } from 'notistack';
 
-import { SnackbarMessage, SnackbarMessageProps } from '~/components/SnackbarMessage';
+import { SnackbarMessage, SnackbarMessageProps } from '~/components';
 
 const useSnackbar = () => {
   const { enqueueSnackbar: enqueueSnackbarOriginal, closeSnackbar } = useSnackbarOriginal();
