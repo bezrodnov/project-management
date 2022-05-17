@@ -5,6 +5,7 @@ import Head from 'next/head';
 import clsx from 'clsx';
 
 import { Header } from '~/components';
+import { ConfirmationDialogContextProvider } from '~/contexts';
 
 import styles from './Layout.module.scss';
 
@@ -17,7 +18,7 @@ export type LayoutProps = {
 
 const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps) => (
   <div
-    className={clsx(styles.container, {
+    className={clsx(styles.root, {
       [styles.disableScroll]: disableScroll,
     })}
   >
@@ -25,7 +26,9 @@ const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps
       <title>{title}</title>
     </Head>
     <Header isAuthenticated={isAuthenticated} />
-    <main className={styles.main}>{children}</main>
+    <main className={styles.main}>
+      <ConfirmationDialogContextProvider>{children}</ConfirmationDialogContextProvider>
+    </main>
     <footer className={styles.footer}>
       <a
         href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
