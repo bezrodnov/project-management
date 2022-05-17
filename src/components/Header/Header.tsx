@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { AppBar, Box, Button, Toolbar } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 import { signOff } from '~/api/auth';
 import { LanguageSwitch } from '~/components/LanguageSwitch';
@@ -12,7 +12,7 @@ import { PATHS } from '~/config';
 
 import { HeaderProps } from './Header.types';
 
-const Header = ({ title, isAuthenticated }: HeaderProps) => {
+const Header = ({ isAuthenticated }: HeaderProps) => {
   const { t } = useTranslation('header');
 
   const router = useRouter();
@@ -25,7 +25,11 @@ const Header = ({ title, isAuthenticated }: HeaderProps) => {
   return (
     <AppBar position="sticky" color="default">
       <Toolbar>
-        {title}
+        {isAuthenticated && (
+          <Link href={PATHS.BOARDS}>
+            <Button>{t('boards')}</Button>
+          </Link>
+        )}
         <Box sx={{ flexGrow: 1 }} />
         <LanguageSwitch />
         {!isAuthenticated && (

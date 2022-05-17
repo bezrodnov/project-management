@@ -1,4 +1,6 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
+
+import Head from 'next/head';
 
 import clsx from 'clsx';
 
@@ -19,7 +21,10 @@ const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps
       [styles.disableScroll]: disableScroll,
     })}
   >
-    <Header title={title} isAuthenticated={isAuthenticated} />
+    <Head>
+      <title>{title}</title>
+    </Head>
+    <Header isAuthenticated={isAuthenticated} />
     <main className={styles.main}>{children}</main>
     <footer className={styles.footer}>
       <a

@@ -1,28 +1,45 @@
-import { NextApiHandler } from 'next';
+import { NextApiHandler, NextApiRequest } from 'next';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, Method } from 'axios';
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+const BASE_URL = process.env.API_BASE_URL;
+
+const doRequest = (
+  url: string,
+  {
+    baseURL = BASE_URL,
+    method = 'GET',
+    data,
+    cookies,
+  }: {
+    baseURL?: string;
+    method?: string;
+    data?: unknown;
+    cookies: NextApiRequestCookies;
+  }
+) => {
+  const token = cookies['auth-token'];
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  const parsedURL = `${baseURL}/${url.replace('/api/', '')}`;
+  console.log({ parsedURL, headers, method, data });
+  return axios(parsedURL, { method, data, headers });
+};
+
 const proxy =
-  ({ baseURL = process.env.API_BASE_URL, methods }: { baseURL?: string; methods: string[] }): NextApiHandler =>
+  ({ baseURL = BASE_URL, methods }: { baseURL?: string; methods: string[] }): NextApiHandler =>
   (req, res) => {
-    if (!req.method || !methods.includes(req.method)) {
+    const { method, url, cookies, body: data } = req;
+    if (!url || !method || !methods.includes(method)) {
       res.status(404);
       return;
     }
 
-    const url = req.url?.substring('/api/'.length);
-
-    const token = req.cookies['auth-token'];
-    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
-    return axios(`${baseURL}/${url}`, {
-      method: req.method,
-      data: req.body,
-      headers,
-    })
+    return doRequest(url, { baseURL, method, cookies, data })
       .then(async (response) => {
         res.status(response.status);
 
@@ -46,4 +63,4 @@ const proxy =
       });
   };
 
-export { proxy };
+export { proxy, doRequest };

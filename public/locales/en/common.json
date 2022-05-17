@@ -4,5 +4,7 @@
   },
   "errors": {
     "common": "Oops, something went wrong :( Please try again later"
-  }
+  },
+  "cancel": "Cancel",
+  "ok": "OK"
 }
