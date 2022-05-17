@@ -1,0 +1,9 @@
+{
+  "title": "Boards",
+  "createBoard": "Add Board",
+  "deleteBoard": "Delete Board",
+  "deleteBoardConfirmation": "Are you sure you want to delete board \"{{title}}\"?",
+  "board": {
+    "title": "Title"
+  }
+}

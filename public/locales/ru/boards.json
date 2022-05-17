@@ -1,0 +1,9 @@
+{
+  "title": "Проекты",
+  "createBoard": "Добавить Проект",
+  "deleteBoard": "Удалить Проект",
+  "deleteBoardConfirmation": "Вы уверены, что хотите удалить проект \"{{title}}\"?",
+  "board": {
+    "title": "Название"
+  }
+}
