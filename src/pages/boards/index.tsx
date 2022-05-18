@@ -51,7 +51,7 @@ const Boards = ({ isAuthenticated, boards }: { isAuthenticated: boolean; boards:
 };
 
 export const getServerSideProps = getProtectedPageServerSideProps({
-  i18nextNamespaces: ['header', 'boards', 'common'],
+  i18nextNamespaces: ['header', 'boards'],
   getAdditionalProps: async (context) => {
     const response = await doRequest('/api/boards', { cookies: context.req.cookies });
     return { props: { boards: response.data } };

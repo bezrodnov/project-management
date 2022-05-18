@@ -31,7 +31,7 @@ const getDefaultServerSideProps: GetDefaultServerSideProps =
     }
 
     if (i18nextNamespaces?.length) {
-      Object.assign(props, await serverSideTranslations(context.locale ?? 'en', i18nextNamespaces));
+      Object.assign(props, await serverSideTranslations(context.locale ?? 'en', ['common', ...i18nextNamespaces]));
     }
 
     return { props };

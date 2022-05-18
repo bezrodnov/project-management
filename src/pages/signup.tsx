@@ -9,6 +9,7 @@ import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 import * as Yup from 'yup';
 
 import { signIn, signUp } from '~/api/auth';
+import { PageTitle } from '~/components';
 import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
 import { useSnackbar } from '~/hooks';
@@ -75,46 +76,49 @@ const SignUp = () => {
   const validationSchema = useValidationSchema(valdiationSchemaBulder);
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
-    >
-      <Paper>
-        <Typography textAlign="center" variant="h3" sx={{ mt: 2 }}>
-          {t('signup:title')}
-        </Typography>
-        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-          <Form>
-            <Stack p={4} spacing={2}>
-              <TextField<FormValues, 'name'> name="name" label={t('signup:name')} />
-              <TextField<FormValues, 'login'> name="login" label={t('signup:login')} />
-              <TextField<FormValues, 'password'> name="password" label={t('signup:password')} type="password" />
-              <TextField<FormValues, 'passwordRepeat'>
-                name="passwordRepeat"
-                label={t('signup:passwordRepeat')}
-                type="password"
-              />
-              <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }} disabled={loading}>
-                <Typography variant="body2">{t('signup:signUp')}</Typography>
-              </Button>
-              <Stack flexDirection="row" justifyContent="center" alignItems="center">
-                <Typography variant="body2" sx={{ mr: 1 }}>
-                  {t('signup:signInPrompt')}
-                </Typography>
-                <Link href={PATHS.SIGN_IN}>
-                  <a>
-                    <Typography variant="body2">{t('signup:signIn')}</Typography>
-                  </a>
-                </Link>
+    <>
+      <PageTitle title={t('signup:title')} />
+      <Container
+        maxWidth="sm"
+        sx={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+      >
+        <Paper>
+          <Typography textAlign="center" variant="h3" sx={{ mt: 2 }}>
+            {t('signup:title')}
+          </Typography>
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            <Form>
+              <Stack p={4} spacing={2}>
+                <TextField<FormValues, 'name'> name="name" label={t('signup:name')} />
+                <TextField<FormValues, 'login'> name="login" label={t('signup:login')} />
+                <TextField<FormValues, 'password'> name="password" label={t('signup:password')} type="password" />
+                <TextField<FormValues, 'passwordRepeat'>
+                  name="passwordRepeat"
+                  label={t('signup:passwordRepeat')}
+                  type="password"
+                />
+                <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }} disabled={loading}>
+                  <Typography variant="body2">{t('signup:signUp')}</Typography>
+                </Button>
+                <Stack flexDirection="row" justifyContent="center" alignItems="center">
+                  <Typography variant="body2" sx={{ mr: 1 }}>
+                    {t('signup:signInPrompt')}
+                  </Typography>
+                  <Link href={PATHS.SIGN_IN}>
+                    <a>
+                      <Typography variant="body2">{t('signup:signIn')}</Typography>
+                    </a>
+                  </Link>
+                </Stack>
               </Stack>
-            </Stack>
-          </Form>
-        </Formik>
-      </Paper>
-    </Container>
+            </Form>
+          </Formik>
+        </Paper>
+      </Container>
+    </>
   );
 };
 
-export const getServerSideProps = getUnauthorizedPageServerSideProps({ i18nextNamespaces: ['signup', 'common'] });
+export const getServerSideProps = getUnauthorizedPageServerSideProps({ i18nextNamespaces: ['signup'] });
 
 export default SignUp;

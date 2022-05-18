@@ -1,4 +1,5 @@
 {
+  "pageTitle": "Project Management | {{title}}",
   "forms": {
     "fieldIsRequired": "Field is required"
   },

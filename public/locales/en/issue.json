@@ -1,5 +1,5 @@
 {
+  "title": "Issue | {{id}}",
   "description": "Issue #{{id}} in project #{{pid}}",
-  "title": "Project Management | Issue #{{id}}",
   "home": "Home"
 }

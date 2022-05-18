@@ -1,4 +1,5 @@
 {
+  "pageTitle": "Менеджер Проектов | {{title}}",
   "forms": {
     "fieldIsRequired": "Обязательное поле"
   },

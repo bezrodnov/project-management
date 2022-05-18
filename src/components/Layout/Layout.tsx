@@ -1,10 +1,8 @@
 import { ReactNode } from 'react';
 
-import Head from 'next/head';
-
 import clsx from 'clsx';
 
-import { Header } from '~/components';
+import { Header, PageTitle } from '~/components';
 import { ConfirmationDialogContextProvider } from '~/contexts';
 
 import styles from './Layout.module.scss';
@@ -22,9 +20,7 @@ const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps
       [styles.disableScroll]: disableScroll,
     })}
   >
-    <Head>
-      <title>{title}</title>
-    </Head>
+    <PageTitle title={title} />
     <Header isAuthenticated={isAuthenticated} />
     <main className={styles.main}>
       <ConfirmationDialogContextProvider>{children}</ConfirmationDialogContextProvider>
