@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { Stack } from '@mui/material';
 
 import { updateColumn } from '~/api/boards';
-import { BoardColumn, Layout } from '~/components';
+import { BoardColumn, BoardTitle, Layout } from '~/components';
 import { BoardWithColumns } from '~/types';
 import { reorder } from '~/util/array';
 import { getProtectedPageServerSideProps } from '~/utils/getProtectedPageServerSideProps';
@@ -48,7 +48,7 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
 
   return (
     <Layout title={t('title', { title: board.title })} isAuthenticated={isAuthenticated}>
-      {board.title}
+      <BoardTitle id={board.id} title={board.title} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="boards" direction="horizontal">
           {(droppable) => (
