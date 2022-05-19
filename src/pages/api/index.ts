@@ -54,6 +54,7 @@ const proxy =
         res.send(data.token ? {} : data);
       })
       .catch((e) => {
+        console.error(e);
         if (e instanceof AxiosError) {
           res.status(e.response?.status ?? 500).send(e.response?.data);
           return;

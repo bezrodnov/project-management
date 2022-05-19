@@ -1,10 +1,27 @@
+import { Branded } from './util';
+
 type Board = {
-  id: string;
+  id: Branded<string, 'boardId'>;
   title: string;
 };
 
-type BoardWithColumns = Board & {
-  columns: {}[];
+type Task = {
+  id: Branded<string, 'taskId'>;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
 };
 
-export type { Board, BoardWithColumns };
+type BoardColumn = {
+  id: Branded<string, 'columnId'>;
+  title: string;
+  order: number;
+  tasks: Task[];
+};
+
+type BoardWithColumns = Board & {
+  columns: BoardColumn[];
+};
+
+export type { Board, BoardWithColumns, BoardColumn, Task };
