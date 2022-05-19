@@ -7,3 +7,5 @@ export * from './Layout';
 export * from './CreateBoardButton';
 export * from './DeleteBoardIconButton';
 export * from './BoardColumn';
+
+export * from './EditableText';
