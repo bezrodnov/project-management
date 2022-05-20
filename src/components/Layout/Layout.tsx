@@ -27,6 +27,7 @@ const Layout = ({ children, disableScroll, title, isAuthenticated, sx, className
         justifyContent: 'center',
         alignItems: 'center',
         overflowY: disableScroll ? 'hidden' : undefined,
+        overflowX: 'auto',
         ...sx,
       }}
     >
