@@ -45,7 +45,7 @@ const SignIn = () => {
     setLoading(true);
     try {
       await signIn(credentials);
-      router.push(PATHS.HOME);
+      router.push(PATHS.BOARDS);
     } catch (e) {
       const status = typeof e === 'number' ? e : 500;
       enqueueSnackbar({
