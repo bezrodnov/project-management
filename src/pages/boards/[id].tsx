@@ -5,8 +5,8 @@ import { useTranslation } from 'next-i18next';
 
 import { Stack } from '@mui/material';
 
-import { updateColumn } from '~/api/boards';
-import { BoardColumn, BoardTitle, Layout } from '~/components';
+import { createColumn, updateColumn } from '~/api/columns';
+import { BoardColumn, BoardTitle, CreateBoardColumn, Layout } from '~/components';
 import { BoardWithColumns } from '~/types';
 import { reorder } from '~/util/array';
 import { getProtectedPageServerSideProps } from '~/utils/getProtectedPageServerSideProps';
@@ -46,8 +46,23 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
     );
   };
 
+  const onColumnCreated = async (title: string) =>
+    createColumn(board.id, { title, order: columns.length ? columns[columns.length - 1].order + 1 : 1 }).then(
+      (newColumn) => {
+        setColumns([...columns, newColumn]);
+      },
+      (e) => {
+        // TODO: show something in snackbar
+        throw e;
+      }
+    );
+
   return (
-    <Layout title={t('title', { title: board.title })} isAuthenticated={isAuthenticated}>
+    <Layout
+      title={t('title', { title: board.title })}
+      isAuthenticated={isAuthenticated}
+      sx={{ alignItems: 'flex-start', p: 2, '& > *:not(:last-child)': { mb: 2 } }}
+    >
       <BoardTitle id={board.id} title={board.title} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="boards" direction="horizontal">
@@ -56,13 +71,14 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
               ref={droppable.innerRef}
               {...droppable.droppableProps}
               direction="row"
-              spacing={2}
-              sx={{ overflowX: 'auto', flexGrow: 1, width: '100%', alignItems: 'flex-start' }}
+              spacing={1}
+              sx={{ overflowX: 'auto', flexGrow: 1, alignItems: 'flex-start' }}
             >
               {columns.map((column) => (
                 <BoardColumn key={column.id} column={column} boardId={board.id} />
               ))}
               {droppable.placeholder}
+              <CreateBoardColumn onColumnCreated={onColumnCreated} />
             </Stack>
           )}
         </Droppable>

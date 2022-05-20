@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 
 import { signIn, signUp } from '~/api/auth';
 import { PageTitle } from '~/components';
-import { Form, Formik, TextField, ValidationSchemaBulder, useValidationSchema } from '~/components/formik';
+import { Form, Formik, TextField, ValidationSchemaBuilder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
 import { useSnackbar } from '~/hooks';
 import { getUnauthorizedPageServerSideProps } from '~/utils/getUnauthorizedPageServerSideProps';
@@ -24,7 +24,7 @@ type FormValues = {
 
 const initialValues: FormValues = { name: '', login: '', password: '', passwordRepeat: '' };
 
-const valdiationSchemaBulder: ValidationSchemaBulder<FormValues> = (t) =>
+const valdiationSchemaBuilder: ValidationSchemaBuilder<FormValues> = (t) =>
   Yup.object().shape({
     name: Yup.string().required(t('common:forms.fieldIsRequired')),
     login: Yup.string().required(t('common:forms.fieldIsRequired')),
@@ -73,7 +73,7 @@ const SignUp = () => {
     }
   };
 
-  const validationSchema = useValidationSchema(valdiationSchemaBulder);
+  const validationSchema = useValidationSchema(valdiationSchemaBuilder);
 
   return (
     <>

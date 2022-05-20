@@ -8,10 +8,4 @@ const deleteBoard = (id: Board['id']) => axios.delete<void>(`/boards/${id}`);
 
 const updateBoard = ({ id, title }: Board) => axios.put<void>(`/boards/${id}`, { title });
 
-const updateColumn = (
-  boardId: Board['id'],
-  columnId: BoardColumn['id'],
-  column: Pick<BoardColumn, 'title' | 'order'>
-) => axios.put<void>(`/boards/${boardId}/columns/${columnId}`, column);
-
-export { createBoard, deleteBoard, updateBoard, updateColumn };
+export { createBoard, deleteBoard, updateBoard };

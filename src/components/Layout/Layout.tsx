@@ -1,20 +1,14 @@
-import { ReactNode } from 'react';
+import { Box } from '@mui/material';
 
 import clsx from 'clsx';
 
 import { Header, PageTitle } from '~/components';
-import { ConfirmationDialogContextProvider } from '~/contexts';
+
+import { LayoutProps } from './Layout.types';
 
 import styles from './Layout.module.scss';
 
-export type LayoutProps = {
-  children: ReactNode;
-  disableScroll?: boolean;
-  title: string;
-  isAuthenticated: boolean;
-};
-
-const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps) => (
+const Layout = ({ children, disableScroll, title, isAuthenticated, sx, className }: LayoutProps) => (
   <div
     className={clsx(styles.root, {
       [styles.disableScroll]: disableScroll,
@@ -22,9 +16,22 @@ const Layout = ({ children, disableScroll, title, isAuthenticated }: LayoutProps
   >
     <PageTitle title={title} />
     <Header isAuthenticated={isAuthenticated} />
-    <main className={styles.main}>
-      <ConfirmationDialogContextProvider>{children}</ConfirmationDialogContextProvider>
-    </main>
+    <Box
+      component="main"
+      className={className}
+      sx={{
+        width: '100%',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflowY: disableScroll ? 'hidden' : undefined,
+        ...sx,
+      }}
+    >
+      {children}
+    </Box>
     <footer className={styles.footer}>
       <a
         href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"

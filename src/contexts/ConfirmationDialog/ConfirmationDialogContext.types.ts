@@ -6,7 +6,7 @@ type ConfirmationMessage = {
   danger?: boolean;
   confirmText?: string;
   cancelText?: string;
-  onConfirm: () => void | Promise<void>;
+  onConfirm: () => void | PromiseLike<void>;
   onCancel?: DispatchWithoutAction;
 };
 

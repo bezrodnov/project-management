@@ -1,3 +1,4 @@
 {
-  "title": "Board | {{title}}"
+  "title": "Board | {{title}}",
+  "addColumn": "Add Column"
 }

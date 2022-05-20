@@ -1,6 +1,8 @@
 import { Draggable } from 'react-beautiful-dnd';
 
-import { Stack, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
+
+import { boardColumnWidth } from '~/styles/BoardColumn';
 
 import { BoardColumnProps } from './BoardColumn.types';
 
@@ -8,24 +10,21 @@ const BoardColumn = ({ boardId, column }: BoardColumnProps) => {
   return (
     <Draggable draggableId={column.id} index={column.order - 1}>
       {(draggable) => (
-        <Stack
+        <Paper
           ref={draggable.innerRef}
           {...draggable.draggableProps}
           {...draggable.dragHandleProps}
-          sx={(theme) => ({
-            minWidth: {
-              xs: '80%',
-              sm: '50%',
-              md: 320,
-            },
-            bgcolor: theme.palette.background.paper,
-            borderRadius: theme.shape.borderRadius,
-            p: 2,
+          elevation={0}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            p: 1,
             opacity: 1,
-          })}
+            ...boardColumnWidth,
+          }}
         >
           <Typography>{column.title}</Typography>
-        </Stack>
+        </Paper>
       )}
     </Draggable>
   );

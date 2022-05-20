@@ -10,7 +10,7 @@ type GetDefaultServerSideProps<
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData
 > = (p: {
-  getAdditionalProps?: (context: WithAuth<GetServerSidePropsContext<Q, D>>) => Promise<GetServerSidePropsResult<P>>;
+  getAdditionalProps?: (context: WithAuth<GetServerSidePropsContext<Q, D>>) => PromiseLike<GetServerSidePropsResult<P>>;
   i18nextNamespaces?: string[];
 }) => GetServerSideProps<WithAuth<P>, Q, D>;
 

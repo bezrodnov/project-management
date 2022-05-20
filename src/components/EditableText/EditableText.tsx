@@ -13,8 +13,10 @@ const EditableText = ({ children, variant, onChange, ...other }: EditableTextPro
   const onInputBlur = async () => {
     // TODO: consider supporting loading state with disabled/readonly input
     if (onChange) {
-      const shouldReset = (await onChange(text)) === false;
-      if (shouldReset) {
+      try {
+        await onChange(text);
+      } catch (e) {
+        // TODO: show something in snackbar
         setText(children);
       }
     }

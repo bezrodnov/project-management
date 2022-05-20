@@ -23,7 +23,7 @@ const BoardTitle = ({ id, title: initialTitle }: BoardTitleProps) => {
   };
 
   return (
-    <Paper sx={{ alignSelf: 'flex-start', m: 2 }}>
+    <Paper>
       <EditableText sx={{ p: 2 }} variant="body1" onChange={onChange}>
         {title}
       </EditableText>

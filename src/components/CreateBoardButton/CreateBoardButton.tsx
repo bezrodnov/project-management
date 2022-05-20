@@ -9,14 +9,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import * as Yup from 'yup';
 
 import { createBoard } from '~/api/boards';
-import {
-  Form,
-  Formik,
-  FormikHelpers,
-  TextField,
-  ValidationSchemaBulder,
-  useValidationSchema,
-} from '~/components/formik';
+import { Form, Formik, TextField, ValidationSchemaBuilder, useValidationSchema } from '~/components/formik';
 import { PATHS } from '~/config';
 import { useBoolean } from '~/hooks';
 
@@ -26,7 +19,7 @@ type FormValues = {
 
 const initialValues: FormValues = { title: '' };
 
-const valdiationSchemaBulder: ValidationSchemaBulder<FormValues> = (t) =>
+const valdiationSchemaBuilder: ValidationSchemaBuilder<FormValues> = (t) =>
   Yup.object().shape({
     title: Yup.string().required(t('common:forms.fieldIsRequired')),
   });
@@ -48,7 +41,7 @@ const CreateBoardButton = () => {
 
   const [isDialogOpen, { on: openDialog, off: closeDialog }] = useBoolean();
 
-  const validationSchema = useValidationSchema(valdiationSchemaBulder);
+  const validationSchema = useValidationSchema(valdiationSchemaBuilder);
   return (
     <>
       <Button variant="contained" endIcon={<AddCircleIcon />} onClick={openDialog}>
