@@ -5,9 +5,9 @@ import { useTranslation } from 'next-i18next';
 
 import { Stack } from '@mui/material';
 
-import { createColumn, updateColumn } from '~/api/columns';
-import { BoardColumn, BoardTitle, CreateBoardColumn, Layout } from '~/components';
-import { BoardWithColumns } from '~/types';
+import { updateColumn } from '~/api/columns';
+import { BoardColumn, BoardTitle, CreateBoardColumnButton, Layout } from '~/components';
+import { BoardWithColumns, BoardColumn as TBoardColumn } from '~/types';
 import { reorder } from '~/util/array';
 import { getProtectedPageServerSideProps } from '~/utils/getProtectedPageServerSideProps';
 
@@ -31,7 +31,8 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
 
     // HACK: Backend does not support column order update in batch and throws 500
     // if two columns have the same order after a column update
-    // so we are forced to do this hack: first of all, shift all orders by a column count
+    // so we are forced to do this hack: first of all, shift all orders by
+    // a column count + some safety buffer (in case new column is being added in parallel)
     Promise.all(
       reorderedColumns.map((column) =>
         updateColumn(board.id, column.id, { order: column.order + reorderedColumns.length + 1, title: column.title })
@@ -46,16 +47,9 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
     );
   };
 
-  const onColumnCreated = async (title: string) =>
-    createColumn(board.id, { title, order: columns.length ? columns[columns.length - 1].order + 1 : 1 }).then(
-      (newColumn) => {
-        setColumns([...columns, newColumn]);
-      },
-      (e) => {
-        // TODO: show something in snackbar
-        throw e;
-      }
-    );
+  const onColumnCreated = (newColumn: TBoardColumn) => {
+    setColumns([...columns, newColumn]);
+  };
 
   return (
     <Layout
@@ -78,7 +72,11 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
                 <BoardColumn key={column.id} column={column} boardId={board.id} />
               ))}
               {droppable.placeholder}
-              <CreateBoardColumn onColumnCreated={onColumnCreated} />
+              <CreateBoardColumnButton
+                boardId={board.id}
+                order={columns.length + 1}
+                onColumnCreated={onColumnCreated}
+              />
             </Stack>
           )}
         </Droppable>

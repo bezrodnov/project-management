@@ -6,7 +6,7 @@ const buildURL = (boardId: Board['id'], columnId?: BoardColumn['id']) =>
   `/boards/${boardId}/columns${columnId ? `/${columnId}` : ''}`;
 
 const createColumn = (boardId: Board['id'], column: Pick<BoardColumn, 'title' | 'order'>) =>
-  axios.post<BoardColumn>(buildURL(boardId), column).then(({ data }) => data);
+  axios.post<Omit<BoardColumn, 'tasks'>>(buildURL(boardId), column).then(({ data }) => data);
 
 const deleteColumn = (boardId: Board['id'], columnId: BoardColumn['id']) =>
   axios.delete<void>(buildURL(boardId, columnId));

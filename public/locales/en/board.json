@@ -1,4 +1,11 @@
 {
   "title": "Board | {{title}}",
-  "addColumn": "Add Column"
+  "addColumn": "Add Column",
+  
+  "errors": {
+    "createColumn": {
+      "title": "Failed to add new column",
+      "description": "$t(common:errors.common)"
+    }
+  }
 }

@@ -1,4 +1,11 @@
 {
   "title": "Проект | {{title}}",
-  "addColumn": "Добавить колонку"
+  "addColumn": "Добавить колонку",
+  
+  "errors": {
+    "createColumn": {
+      "title": "Не удалось добавить колонку",
+      "description": "$t(common:errors.common)"
+    }
+  }
 }

@@ -1,18 +1,19 @@
-import { useState } from 'react';
-
 import { useTranslation } from 'next-i18next';
 
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Button, ClickAwayListener, Collapse, IconButton } from '@mui/material';
 
 import * as Yup from 'yup';
 
+import { createColumn } from '~/api/columns';
 import { Form, Formik, TextField, ValidationSchemaBuilder, useValidationSchema } from '~/components/formik';
-import { useBoolean } from '~/hooks';
+import { useBoolean, useSnackbar } from '~/hooks';
 import { boardColumnWidth } from '~/styles/BoardColumn';
 
-import { CreateBoardColumnProps } from './CreateBoardColumn.types';
+import { CreateBoardColumnButtonProps } from './CreateBoardColumnButton.types';
 
 type FormValues = {
   title: string;
@@ -25,12 +26,38 @@ const valdiationSchemaBuilder: ValidationSchemaBuilder<FormValues> = (t) =>
     title: Yup.string().required(t('common:forms.fieldIsRequired')),
   });
 
-const CreateBoardColumn = ({ onColumnCreated }: CreateBoardColumnProps) => {
+const CreateBoardColumnButton = ({ boardId, order, onColumnCreated }: CreateBoardColumnButtonProps) => {
   const { t } = useTranslation('board');
 
-  const [isInEditMode, { on: beginEdit, off: endEdit }] = useBoolean();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleCreateColumn = ({ title }: FormValues) => onColumnCreated(title).then(endEdit);
+  const [isInEditMode, { on: beginEdit, off: endEdit }] = useBoolean();
+  const [isSaving, { on: beginSave, off: endSave }] = useBoolean();
+
+  const handleCreateColumn = ({ title }: FormValues) => {
+    beginSave();
+
+    createColumn(boardId, { title, order })
+      .then(
+        (column) => onColumnCreated?.({ ...column, tasks: [] }),
+        (e) => {
+          enqueueSnackbar({
+            type: 'error',
+            title: t('errors.createColumn.title'),
+            description: t('errors.createColumn.description'),
+          });
+          throw e;
+        }
+      )
+      .then(endEdit)
+      .finally(endSave);
+  };
+
+  const onClickAway = () => {
+    if (!isSaving) {
+      endEdit();
+    }
+  };
 
   const validationSchema = useValidationSchema(valdiationSchemaBuilder);
 
@@ -60,8 +87,8 @@ const CreateBoardColumn = ({ onColumnCreated }: CreateBoardColumnProps) => {
       )}
       <Collapse in={isInEditMode}>
         {isInEditMode && (
-          <ClickAwayListener onClickAway={endEdit}>
-            <Box sx={(theme) => ({ ...boardColumnWidth, p: 1, bgcolor: theme.palette.background.paper })}>
+          <ClickAwayListener onClickAway={onClickAway}>
+            <Box sx={({ palette }) => ({ ...boardColumnWidth, p: 1, bgcolor: palette.background.paper })}>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -72,15 +99,23 @@ const CreateBoardColumn = ({ onColumnCreated }: CreateBoardColumnProps) => {
                   <TextField<FormValues, 'title'>
                     name="title"
                     variant="outlined"
+                    disabled={isSaving}
                     fullWidth
                     autoFocus
                     autoComplete="off"
                     sx={{ mb: 1, '& input': { p: 1 } }}
                   />
-                  <Button variant="contained" type="submit" sx={{ textTransform: 'none' }}>
+                  <LoadingButton
+                    loading={isSaving}
+                    loadingPosition="start"
+                    startIcon={<SaveIcon />}
+                    variant="contained"
+                    type="submit"
+                    sx={{ textTransform: 'none' }}
+                  >
                     {t('addColumn')}
-                  </Button>
-                  <IconButton onClick={endEdit}>
+                  </LoadingButton>
+                  <IconButton disabled={isSaving} onClick={endEdit}>
                     <CloseIcon />
                   </IconButton>
                 </Form>
@@ -93,4 +128,4 @@ const CreateBoardColumn = ({ onColumnCreated }: CreateBoardColumnProps) => {
   );
 };
 
-export { CreateBoardColumn };
+export { CreateBoardColumnButton };
