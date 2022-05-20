@@ -16,7 +16,6 @@ const EditableText = ({ children, variant, onChange, ...other }: EditableTextPro
       try {
         await onChange(text);
       } catch (e) {
-        // TODO: show something in snackbar
         setText(children);
       }
     }
