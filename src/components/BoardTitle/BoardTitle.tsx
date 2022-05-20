@@ -12,13 +12,13 @@ const BoardTitle = ({ id, title: initialTitle }: BoardTitleProps) => {
 
   const onChange = async (newTitle: string) => {
     if (!newTitle.trim()) {
-      return false;
+      throw new Error();
     }
 
     setTitle(newTitle);
-    return updateBoard({ id, title: newTitle }).catch(() => {
+    return updateBoard({ id, title: newTitle }).catch((e) => {
       // TODO: show some message in snackbar
-      return false;
+      throw e;
     });
   };
 

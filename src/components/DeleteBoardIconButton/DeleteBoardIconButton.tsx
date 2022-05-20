@@ -10,7 +10,9 @@ import { deleteBoard } from '~/api/boards';
 import { useConfirmationDialog } from '~/contexts';
 import { useSnackbar } from '~/hooks';
 
-const DeleteBoardIconButton = ({ id, title }: { id: string; title: string }) => {
+import { DeleteBoardIconButtonProps } from './DeleteBoardIconButton.types';
+
+const DeleteBoardIconButton = ({ id, title }: DeleteBoardIconButtonProps) => {
   const { t } = useTranslation(['boards', 'common']);
 
   const router = useRouter();

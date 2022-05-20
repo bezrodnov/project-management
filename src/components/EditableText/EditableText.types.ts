@@ -9,7 +9,7 @@ export type EditableTextProps = Omit<TypographyProps, 'children' | 'variant' | '
    * A text change handler. If it rejects then
    * the text will be reverted back to the original one.
    */
-  onChange?: (newValue: string) => PromiseLike<void>;
+  onChange?: (newValue: string) => PromiseLike<unknown>;
   children: string;
   onClick?: Dispatch<MouseEvent<HTMLDivElement>>;
 };
