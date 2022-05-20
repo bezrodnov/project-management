@@ -35,20 +35,16 @@ const Board = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuthenti
     // a column count + some safety buffer (in case new column is being added in parallel)
     Promise.all(
       reorderedColumns.map((column) =>
-        updateColumn(board.id, column.id, { order: column.order + reorderedColumns.length + 1, title: column.title })
+        updateColumn(board.id, { ...column, order: column.order + reorderedColumns.length + 1 })
       )
     ).then(() =>
       // and then set actual order values based on new column order
-      Promise.all(
-        reorderedColumns.map((column) =>
-          updateColumn(board.id, column.id, { order: column.order, title: column.title })
-        )
-      )
+      Promise.all(reorderedColumns.map((column) => updateColumn(board.id, column)))
     );
   };
 
   const onColumnCreated = (newColumn: TBoardColumn) => {
-    setColumns([...columns, newColumn]);
+    setColumns([...columns, { ...newColumn, tasks: [] }]);
   };
 
   return (

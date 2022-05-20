@@ -1,6 +1,6 @@
-import { Board, BoardColumn } from '~/types';
+import { Board, BoardColumnWithTasks } from '~/types';
 
 export type BoardColumnProps = {
   boardId: Board['id'];
-  column: BoardColumn;
+  column: BoardColumnWithTasks;
 };

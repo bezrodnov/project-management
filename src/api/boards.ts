@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Board, BoardColumn } from '~/types';
+import { Board } from '~/types';
 
 const createBoard = (board: Pick<Board, 'title'>) => axios.post<Board>('/boards', board).then(({ data }) => data);
 

@@ -38,17 +38,14 @@ const CreateBoardColumnButton = ({ boardId, order, onColumnCreated }: CreateBoar
     beginSave();
 
     createColumn(boardId, { title, order })
-      .then(
-        (column) => onColumnCreated?.({ ...column, tasks: [] }),
-        (e) => {
-          enqueueSnackbar({
-            type: 'error',
-            title: t('errors.createColumn.title'),
-            description: t('errors.createColumn.description'),
-          });
-          throw e;
-        }
-      )
+      .then(onColumnCreated, (e) => {
+        enqueueSnackbar({
+          type: 'error',
+          title: t('errors.createColumn.title'),
+          description: t('errors.createColumn.description'),
+        });
+        throw e;
+      })
       .then(endEdit)
       .finally(endSave);
   };

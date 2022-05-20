@@ -9,14 +9,19 @@ import { EditableTextProps } from './EditableText.types';
 const EditableText = ({ children, variant, onChange, ...other }: EditableTextProps) => {
   const [text, setText] = useState(children);
   const [isInEditMode, { on: startEdit, off: endEdit }] = useBoolean();
+  const [isSaving, { on: startSave, off: endSave }] = useBoolean();
 
   const onInputBlur = async () => {
     // TODO: consider supporting loading state with disabled/readonly input
     if (onChange) {
+      startSave();
+
       try {
         await onChange(text);
       } catch (e) {
         setText(children);
+      } finally {
+        endSave();
       }
     }
 
@@ -61,6 +66,7 @@ const EditableText = ({ children, variant, onChange, ...other }: EditableTextPro
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={onInputBlur}
+          disabled={isSaving}
           autoFocus
         />
       )}

@@ -6,6 +6,10 @@
     "createColumn": {
       "title": "Failed to add new column",
       "description": "$t(common:errors.common)"
+    },
+    "updateColumnTitle": {
+      "title": "Failed to rename column",
+      "description": "$t(common:errors.common)"
     }
   }
 }
