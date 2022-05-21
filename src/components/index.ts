@@ -6,8 +6,10 @@ export * from './Layout';
 
 export * from './EditableText';
 
+export * from './Board';
+export * from './BoardTitle';
+export * from './BoardColumn';
+
 export * from './CreateBoardButton';
 export * from './CreateBoardColumnButton';
 export * from './DeleteBoardIconButton';
-export * from './BoardColumn';
-export * from './BoardTitle';

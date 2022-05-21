@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { useTranslation } from 'next-i18next';
 
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 
 import { updateColumn } from '~/api/columns';
 import { useSnackbar } from '~/hooks';
 import { boardColumnWidth } from '~/styles/BoardColumn';
+import { Task } from '~/types';
 
 import { EditableText } from '../EditableText';
 import { BoardColumnProps } from './BoardColumn.types';
@@ -38,6 +39,25 @@ const BoardColumn = ({ boardId, column }: BoardColumnProps) => {
       });
   };
 
+  const onTaskTitleChange = async (taskId: Task['id'], title: string) => {
+    if (!title) {
+      throw new Error();
+    }
+    // return updateTask(boardId, column.id, { ...column.tasks.find(({ id }) => id === taskId), title })
+    //   .then(() => {
+    //     setTaskTitle(title);
+    //   })
+    //   .catch((e) => {
+    //     enqueueSnackbar({
+    //       type: 'error',
+    //       title: t('errors.updateTaskTitle.title'),
+    //       description: t('errors.updateTaskTitle.description'),
+    //     });
+
+    //     throw e;
+    //   });
+  };
+
   return (
     <Draggable draggableId={column.id} index={column.order - 1}>
       {(draggable) => (
@@ -54,9 +74,26 @@ const BoardColumn = ({ boardId, column }: BoardColumnProps) => {
             ...boardColumnWidth,
           }}
         >
-          <EditableText variant="body1" onChange={onColumnTitleChange}>
+          <EditableText variant="body1" onChange={onColumnTitleChange} sx={{ ml: 1, mr: 1 }}>
             {title}
           </EditableText>
+          <Droppable droppableId="tasks">
+            {(droppable) => (
+              <Stack ref={droppable.innerRef} {...droppable.droppableProps} spacing={1} sx={{ alignItems: 'stretch' }}>
+                {column.tasks.map((task) => (
+                  <Paper
+                    key={task.id}
+                    elevation={0}
+                    sx={({ palette }) => ({ bgcolor: palette.grey[300], p: 1, mt: 1 })}
+                  >
+                    <EditableText variant="body1" onChange={(title) => onTaskTitleChange(task.id, title)}>
+                      {task.title}
+                    </EditableText>
+                  </Paper>
+                ))}
+              </Stack>
+            )}
+          </Droppable>
         </Paper>
       )}
     </Draggable>
