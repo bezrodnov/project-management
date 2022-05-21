@@ -4,11 +4,13 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { Stack } from '@mui/material';
 
 import { updateColumn } from '~/api/columns';
-import { BoardColumn, BoardTitle, CreateBoardColumnButton } from '~/components';
 import { BoardColumn as TBoardColumn } from '~/types';
 import { reorder } from '~/util/array';
 
 import { BoardProps } from './Board.types';
+import { BoardColumn } from './BoardColumn';
+import { BoardTitle } from './BoardTitle';
+import { CreateBoardColumnButton } from './CreateBoardColumnButton';
 
 const Board = ({ board }: BoardProps) => {
   const [columns, setColumns] = useState(() => [...board.columns.sort((a, b) => a.order - b.order)]);

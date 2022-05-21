@@ -10,7 +10,7 @@ import { useSnackbar } from '~/hooks';
 import { boardColumnWidth } from '~/styles/BoardColumn';
 import { Task } from '~/types';
 
-import { EditableText } from '../EditableText';
+import { EditableText } from '../../EditableText';
 import { BoardColumnProps } from './BoardColumn.types';
 
 const BoardColumn = ({ boardId, column }: BoardColumnProps) => {
