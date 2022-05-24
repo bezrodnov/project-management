@@ -4,6 +4,7 @@
   "deleteBoard": "Delete Board",
   "deleteBoardConfirmation": "Are you sure you want to delete board \"{{title}}\"?",
   "board": {
-    "title": "Title"
+    "title": "Title",
+    "description": "Description"
   }
 }

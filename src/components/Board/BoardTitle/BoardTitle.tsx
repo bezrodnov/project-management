@@ -7,8 +7,8 @@ import { EditableText } from '~/components';
 
 import { BoardTitleProps } from './BoardTitle.types';
 
-const BoardTitle = ({ id, title: initialTitle }: BoardTitleProps) => {
-  const [title, setTitle] = useState(initialTitle);
+const BoardTitle = ({ board }: BoardTitleProps) => {
+  const [title, setTitle] = useState(board.title);
 
   const onChange = async (newTitle: string) => {
     if (!newTitle.trim()) {
@@ -16,7 +16,7 @@ const BoardTitle = ({ id, title: initialTitle }: BoardTitleProps) => {
     }
 
     setTitle(newTitle);
-    return updateBoard({ id, title: newTitle }).catch((e) => {
+    return updateBoard({ ...board, title: newTitle }).catch((e) => {
       // TODO: show some message in snackbar
       throw e;
     });

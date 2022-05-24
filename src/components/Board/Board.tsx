@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 import { Stack } from '@mui/material';
 
 import { updateColumn } from '~/api/columns';
-import { BoardColumn as TBoardColumn } from '~/types';
+import { useSnackbar } from '~/hooks';
+import { BoardColumnWithTasks, BoardColumn as TBoardColumn } from '~/types';
 import { reorder } from '~/util/array';
 
 import { BoardProps } from './Board.types';
@@ -13,31 +17,39 @@ import { BoardTitle } from './BoardTitle';
 import { CreateBoardColumnButton } from './CreateBoardColumnButton';
 
 const Board = ({ board }: BoardProps) => {
-  const [columns, setColumns] = useState(() => [...board.columns.sort((a, b) => a.order - b.order)]);
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const [columns, setColumns] = useState<BoardColumnWithTasks[]>([]);
+
+  useEffect(() => {
+    setColumns([...board.columns].sort((a, b) => a.order - b.order));
+  }, [board.columns]);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
+
+    const movedColumn = columns[result.source.index];
+    updateColumn(board.id, { ...movedColumn, order: result.destination.index + 1 }).catch(() => {
+      enqueueSnackbar({
+        type: 'error',
+        title: t('board:errors.moveColumn.title'),
+        description: t('board:errors.moveColumn.description'),
+      });
+
+      router.replace(router.asPath);
+    });
+
     const reorderedColumns = reorder(columns, result.source.index, result.destination.index);
     reorderedColumns.forEach((column, index) => {
       column.order = index + 1;
     });
 
     setColumns(reorderedColumns);
-
-    // HACK: Backend does not support column order update in batch and throws 500
-    // if two columns have the same order after a column update
-    // so we are forced to do this hack: first of all, shift all orders by
-    // a column count + some safety buffer (in case new column is being added in parallel)
-    Promise.all(
-      reorderedColumns.map((column) =>
-        updateColumn(board.id, { ...column, order: column.order + reorderedColumns.length + 1 })
-      )
-    ).then(() =>
-      // and then set actual order values based on new column order
-      Promise.all(reorderedColumns.map((column) => updateColumn(board.id, column)))
-    );
   };
 
   const onColumnCreated = (newColumn: TBoardColumn) => {
@@ -46,7 +58,7 @@ const Board = ({ board }: BoardProps) => {
 
   return (
     <Stack spacing={2} alignItems="flex-start">
-      <BoardTitle id={board.id} title={board.title} />
+      <BoardTitle board={board} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="boards" direction="horizontal">
           {(droppable) => (
@@ -61,11 +73,7 @@ const Board = ({ board }: BoardProps) => {
                 <BoardColumn key={column.id} column={column} boardId={board.id} />
               ))}
               {droppable.placeholder}
-              <CreateBoardColumnButton
-                boardId={board.id}
-                order={columns.length + 1}
-                onColumnCreated={onColumnCreated}
-              />
+              <CreateBoardColumnButton boardId={board.id} onColumnCreated={onColumnCreated} />
             </Stack>
           )}
         </Droppable>

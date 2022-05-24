@@ -10,6 +10,10 @@
     "updateColumnTitle": {
       "title": "Не удалось переименовать колонку",
       "description": "$t(common:errors.common)"
+    },
+    "moveColumn": {
+      "title": "Не удалось переместить колонку",
+      "description": "$t(common:errors.common)"
     }
   }
 }

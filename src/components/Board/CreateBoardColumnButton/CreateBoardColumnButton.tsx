@@ -26,7 +26,7 @@ const valdiationSchemaBuilder: ValidationSchemaBuilder<FormValues> = (t) =>
     title: Yup.string().required(t('common:forms.fieldIsRequired')),
   });
 
-const CreateBoardColumnButton = ({ boardId, order, onColumnCreated }: CreateBoardColumnButtonProps) => {
+const CreateBoardColumnButton = ({ boardId, onColumnCreated }: CreateBoardColumnButtonProps) => {
   const { t } = useTranslation('board');
 
   const { enqueueSnackbar } = useSnackbar();
@@ -37,7 +37,7 @@ const CreateBoardColumnButton = ({ boardId, order, onColumnCreated }: CreateBoar
   const handleCreateColumn = ({ title }: FormValues) => {
     beginSave();
 
-    createColumn(boardId, { title, order })
+    createColumn(boardId, { title })
       .then(onColumnCreated, (e) => {
         enqueueSnackbar({
           type: 'error',

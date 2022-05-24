@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack } from '@mui/material';
 
 import * as Yup from 'yup';
 
@@ -15,13 +15,18 @@ import { useBoolean } from '~/hooks';
 
 type FormValues = {
   title: string;
+  description: string;
 };
 
-const initialValues: FormValues = { title: '' };
+const initialValues: FormValues = {
+  title: '',
+  description: '',
+};
 
 const valdiationSchemaBuilder: ValidationSchemaBuilder<FormValues> = (t) =>
   Yup.object().shape({
     title: Yup.string().required(t('common:forms.fieldIsRequired')),
+    description: Yup.string().required(t('common:forms.fieldIsRequired')),
   });
 
 const CreateBoardButton = () => {
@@ -31,9 +36,9 @@ const CreateBoardButton = () => {
 
   const [isProcessing, { on: startProcessing }] = useBoolean();
   const onSubmit = useCallback(
-    async ({ title }: FormValues) => {
+    async (board: FormValues) => {
       startProcessing();
-      const { id } = await createBoard({ title });
+      const { id } = await createBoard(board);
       router.push(PATHS.BOARD(id));
     },
     [startProcessing, router]
@@ -64,12 +69,20 @@ const CreateBoardButton = () => {
               <DialogTitle>{t('boards:createBoard')}</DialogTitle>
               <Form>
                 <DialogContent sx={{ pt: 2 }}>
-                  <TextField<FormValues, 'title'>
-                    name="title"
-                    label={t('boards:board.title')}
-                    disabled={isProcessing}
-                    fullWidth
-                  />
+                  <Stack spacing={2}>
+                    <TextField<FormValues, 'title'>
+                      name="title"
+                      label={t('boards:board.title')}
+                      disabled={isProcessing}
+                      fullWidth
+                    />
+                    <TextField<FormValues, 'description'>
+                      name="description"
+                      label={t('boards:board.description')}
+                      disabled={isProcessing}
+                      fullWidth
+                    />
+                  </Stack>
                 </DialogContent>
                 <DialogActions>
                   <Button variant="outlined" onClick={onClose} disabled={isProcessing}>
