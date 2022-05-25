@@ -20,7 +20,7 @@ const DeleteBoardIconButton = ({ id, title }: DeleteBoardIconButtonProps) => {
   const { showConfirmationDialog } = useConfirmationDialog();
   const { enqueueSnackbar } = useSnackbar();
 
-  const onClick = async (e: MouseEvent) => {
+  const onClick = (e: MouseEvent) => {
     e.stopPropagation();
     showConfirmationDialog({
       title: t('boards:deleteBoard'),

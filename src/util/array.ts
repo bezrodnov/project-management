@@ -1,7 +1,28 @@
-const reorder = <T>(array: T[], startIndex: number, endIndex: number) => {
-  const result = Array.from(array);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+const reorder = <T extends { order: number }>(
+  array: T[],
+  {
+    removeIndex,
+    insertIndex,
+    elementToInsert,
+  }: {
+    removeIndex?: number;
+    insertIndex?: number;
+    elementToInsert: T;
+  }
+) => {
+  const result = array.map((value) => ({ ...value }));
+
+  if (removeIndex !== undefined) {
+    result.splice(removeIndex, 1);
+  }
+
+  if (insertIndex !== undefined) {
+    result.splice(insertIndex, 0, elementToInsert);
+  }
+
+  result.forEach((value, index) => {
+    value.order = index + 1;
+  });
 
   return result;
 };

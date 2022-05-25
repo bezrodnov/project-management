@@ -1,5 +1,11 @@
 {
   "title": "Issue | {{id}}",
   "description": "Issue #{{id}} in project #{{pid}}",
-  "home": "Home"
+  "home": "Home",
+  "errors": {
+    "moveTask": {
+      "title": "Failed to move task",
+      "description": "$t(common:errors.common)"
+    }
+  }
 }

@@ -1,5 +1,11 @@
 {
   "title": "Задача #{{id}}",
   "description": "Задача #{{id}} в проекте #{{pid}}",
-  "home": "Домой"
+  "home": "Домой",
+  "errors": {
+    "moveTask": {
+      "title": "Не удалось переместить задачу",
+      "description": "$t(common:errors.common)"
+    }
+  }
 }

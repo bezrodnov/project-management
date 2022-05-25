@@ -23,7 +23,7 @@ const BoardPage = ({ board, isAuthenticated }: { board: BoardWithColumns; isAuth
 };
 
 export const getServerSideProps = getProtectedPageServerSideProps({
-  i18nextNamespaces: ['header', 'board'],
+  i18nextNamespaces: ['header', 'board', 'issue'],
   getAdditionalProps: async (context) => {
     resetServerContext();
 
