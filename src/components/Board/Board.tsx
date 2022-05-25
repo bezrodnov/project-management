@@ -23,7 +23,13 @@ const Board = ({ board }: BoardProps) => {
   const [columns, setColumns] = useState<BoardColumnWithTasks[]>([]);
 
   useEffect(() => {
-    setColumns([...board.columns].sort((a, b) => a.order - b.order));
+    setColumns(
+      [...board.columns]
+        .sort((a, b) => a.order - b.order)
+        // TODO: there seem to be an issue on BE which allows column order with missing values, e.g. 1, 2, 3, 5
+        // so for now just make sure all order values are "in order"
+        .map((column, index) => ({ ...column, order: index + 1 }))
+    );
   }, [board.columns]);
 
   const { enqueueSnackbar } = useSnackbar();
